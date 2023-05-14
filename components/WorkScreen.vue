@@ -1,14 +1,11 @@
 <template>
   <div class="workscreen">
-    <button @click="fetch">Fetch</button>
+    <button @click="register">Register</button>
   </div>
 </template>
 
 <script setup>
-async function fetch() {
-  const res = await $fetch("/api/users/friends?id=1");
-  console.log(res);
-}
+async function register() {}
 </script>
 
 <style lang="scss" scoped></style>
