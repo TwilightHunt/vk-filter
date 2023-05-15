@@ -1,5 +1,5 @@
 <template>
-  <div class="navigation bg-black">
+  <div class="navigation rounded bg-black">
     <NavigationItem :title="'title'" />
     <NavigationItem :title="'title'" />
     <NavigationItem :title="'title'" />

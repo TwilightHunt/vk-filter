@@ -3,12 +3,8 @@ import { fileURLToPath } from "url";
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   alias: {
-    // "~~": "/<rootDir>",
-    // "@@": "/<rootDir>",
     "~~": fileURLToPath(new URL("./assets", import.meta.url)),
     "@@": fileURLToPath(new URL("./public", import.meta.url)),
-    // assets: "/<rootDir>/assets",
-    // public: "/<rootDir>/public",
   },
   runtimeConfig: {
     // private fieds

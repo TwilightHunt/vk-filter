@@ -1,5 +1,5 @@
 <template>
-  <div class="workscreen bg-black">
+  <div class="workscreen rounded overflow-hidden bg-black">
     <button @click="register">Register</button>
   </div>
 </template>
