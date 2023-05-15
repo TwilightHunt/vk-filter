@@ -1,13 +1,27 @@
+import { fileURLToPath } from "url";
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  alias: {
+    // "~~": "/<rootDir>",
+    // "@@": "/<rootDir>",
+    "~~": fileURLToPath(new URL("./assets", import.meta.url)),
+    "@@": fileURLToPath(new URL("./public", import.meta.url)),
+    // assets: "/<rootDir>/assets",
+    // public: "/<rootDir>/public",
+  },
   runtimeConfig: {
-    // The private keys which are only available server-side
-    // PRIVATE: KEY
-    // Keys within public are also exposed client-side
-    public: {
-      token: process.env.TOKEN,
-      app_id: process.env.APP_ID,
-      base_url: process.env.BASE_URL,
+    token: process.env.TOKEN,
+    app_id: process.env.APP_ID,
+    base_url: process.env.BASE_URL,
+    // public: {
+    //   //
+    // },
+  },
+  app: {
+    head: {
+      link: [{ rel: "stylesheet", href: "favicon.ico" }],
+      title: "VK Filter",
     },
   },
 });

@@ -10,7 +10,8 @@
   },
   "devDependencies": {
     "@types/node": "^18",
-    "nuxt": "^3.4.3"
+    "nuxt": "^3.4.3",
+    "nuxt-icon": "^0.4.0"
   },
   "dependencies": {
     "@vk-io/authorization": "^1.4.1",
