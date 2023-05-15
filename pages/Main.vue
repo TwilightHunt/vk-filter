@@ -16,11 +16,4 @@
 
 <script setup></script>
 
-<style lang="scss">
-$gray: #222;
-
-body {
-  background-color: $gray;
-  color: #fff;
-}
-</style>
+<style lang="scss"></style>

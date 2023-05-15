@@ -1,0 +1,8 @@
+* {
+  --gray: #222;
+}
+
+body {
+  background-color: var(--gray);
+  color: #fff;
+}

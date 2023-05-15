@@ -11,14 +11,14 @@ export default defineNuxtConfig({
     // public: "/<rootDir>/public",
   },
   runtimeConfig: {
-    token: process.env.TOKEN,
-    app_id: process.env.APP_ID,
-    base_url: process.env.BASE_URL,
-    // public: {
-    //   //
-    // },
+    // private fieds
+    public: {
+      token: process.env.TOKEN,
+      app_id: process.env.APP_ID,
+      base_url: process.env.BASE_URL,
+    },
   },
-  css: ["bootstrap/dist/css/bootstrap.min.css"],
+  css: ["bootstrap/dist/css/bootstrap.min.css", "~~/css/global.css"],
   app: {
     head: {
       link: [{ rel: "stylesheet", href: "favicon.ico" }],
