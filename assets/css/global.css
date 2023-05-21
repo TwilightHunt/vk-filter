@@ -8,3 +8,12 @@ body {
   color: #fff;
   font-family: Raleway, Roboto;
 }
+
+a {
+  text-decoration: none;
+  color: #fff;
+}
+
+a:hover {
+  color: #fff;
+}
