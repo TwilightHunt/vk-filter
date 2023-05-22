@@ -1,8 +1,8 @@
 <template>
   <div class="navigation rounded bg-black">
-    <NavigationItem :title="'Сообщества'" :component="Communities" />
-    <NavigationItem :title="'Пользователи'" :component="Users" />
-    <NavigationItem :title="'Посты'" :component="Posts" />
+    <NavigationItem :title="$t('communities')" :component="Communities" />
+    <NavigationItem :title="$t('users')" :component="Users" />
+    <NavigationItem :title="$t('posts')" :component="Posts" />
   </div>
 </template>
 

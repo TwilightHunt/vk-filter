@@ -3,12 +3,14 @@
 </template>
 
 <script setup>
+const localPath = useLocalePath();
+
 onMounted(() => {
   const user = JSON.parse(localStorage.getItem("user"));
   if (user.token) {
-    return navigateTo("/main");
+    return navigateTo(localPath("/main"));
   }
-  return navigateTo("/auth");
+  return navigateTo(localPath("/auth"));
 });
 </script>
 
