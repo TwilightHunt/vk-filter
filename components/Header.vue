@@ -1,7 +1,9 @@
 <template>
-  <div class="header d-flex justify-content-between bg-black mb-3 py-4">
-    <div class="container">CONATINER</div>
-    <LangSwitch />
+  <div class="header bg-black mb-3 py-4">
+    <div class="container d-flex justify-content-between">
+      <div class="header__title">VK FILTER</div>
+      <LangSwitch />
+    </div>
   </div>
 </template>
 
