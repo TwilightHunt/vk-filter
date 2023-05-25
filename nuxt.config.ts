@@ -9,7 +9,6 @@ export default defineNuxtConfig({
   runtimeConfig: {
     // private fieds
     public: {
-      token: process.env.TOKEN,
       app_id: process.env.APP_ID,
       base_url: process.env.BASE_URL,
     },
