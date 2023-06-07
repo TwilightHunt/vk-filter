@@ -11,6 +11,7 @@ export default defineNuxtConfig({
     public: {
       app_id: process.env.APP_ID,
       base_url: process.env.BASE_URL,
+      token: process.env.TOKEN,
     },
   },
   css: ["bootstrap/dist/css/bootstrap.min.css", "~~/css/global.css"],

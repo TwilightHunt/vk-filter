@@ -13,6 +13,6 @@ import { currentSection } from "~/composables/useNavigation";
 
 <style lang="scss" scoped>
 .workscreen {
-  min-height: 70vh;
+  min-height: 80vh;
 }
 </style>
