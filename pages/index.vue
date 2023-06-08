@@ -9,9 +9,9 @@ const config = useRuntimeConfig();
 onMounted(() => {
   // const user = JSON.parse(localStorage.getItem("user"));
   // if (user) {
-  return navigateTo(localPath("/main"));
+  //   return navigateTo(localPath("/main"));
   // }
-  // return navigateTo(localPath("/auth"));
+  return navigateTo(localPath("/auth"));
 });
 </script>
 
