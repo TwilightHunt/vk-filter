@@ -2,12 +2,14 @@ import { vk } from "~/utils/vk";
 
 export default defineEventHandler(async (event) => {
   try {
-    const { group_id } = getQuery(event);
+    const { group_id, offset, count } = getQuery(event);
 
     const members = await vk.api.groups.getMembers({
       group_id: group_id as string,
-      count: 100,
+      offset: offset as number,
+      count: count as number,
     });
+
     return {
       members,
     };

@@ -17,6 +17,6 @@ export async function run() {
     const response = await direct.run();
     return response;
   } catch (error) {
-    console.error(error);
+    throw new Error(error);
   }
 }

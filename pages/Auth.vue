@@ -34,9 +34,21 @@
 </template>
 
 <script setup>
+const localPath = useLocalePath();
+const config = useRuntimeConfig();
+
 const auth = async () => {
-  const response = await $fetch("/api/auth");
-  console.log(response);
+  try {
+    const data = await $fetch("/api/auth");
+    if (data?.token) {
+      config.public.token = data.token;
+      localStorage.setItem("user", JSON.stringify(data));
+      return navigateTo(localPath("/main"));
+    }
+    throw new Error("Unexpected error");
+  } catch (error) {
+    console.error(error);
+  }
 };
 </script>
 

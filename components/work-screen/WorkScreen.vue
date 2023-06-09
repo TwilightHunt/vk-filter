@@ -13,6 +13,7 @@ import { currentSection } from "~/composables/useNavigation";
 
 <style lang="scss" scoped>
 .workscreen {
-  min-height: 80vh;
+  height: 80vh;
+  overflow-y: scroll;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="user-card">
-    <a :href="`https://vk.com/id${props.userId}`"
+    <a target="_blank" rel="noopener noreferrer" :href="`https://vk.com/${userInfo.domain}`"
       >{{ userInfo.first_name }} {{ userInfo.last_name }}</a
     >
   </div>

@@ -1,5 +1,6 @@
 import { VK } from "vk-io";
+const config = useRuntimeConfig();
 
 export const vk = new VK({
-  token: process.env.TOKEN,
+  token: config.public.token,
 });
