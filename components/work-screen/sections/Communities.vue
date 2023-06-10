@@ -22,24 +22,24 @@
       <div>
         <div class="fs-5 mb-3">Возраст</div>
         <span class="me-2">От: </span>
-        <input type="number" min="1" max="99" maxlength="2" />
+        <input type="number" min="1" max="99" maxlength="2" @change="setMinAge" />
         <span class="me-2 ms-5">До: </span>
-        <input type="number" min="1" max="99" maxlength="2" />
+        <input type="number" min="1" max="99" maxlength="2" @change="setMaxAge" />
       </div>
     </div>
     <div v-if="data.info" class="communities__result">
       <div class="community-members-count fs-4">Количество участников: {{ data.info.count }}</div>
       <div class="community-members-resut-header fs-4 fw-bolder mt-2 mb-1">Результат запроса:</div>
-      <UserCard v-for="member in data.info.items" :user-id="member" :key="member" />
+      <UserCard v-for="member in data.info" :user-info="member" :key="member" />
     </div>
-    <button
+    <!-- <button
       v-if="data.isNextVisible"
       @click="filter"
       class="btn btn-primary"
       type="button"
       id="button-addon2">
       Next
-    </button>
+    </button> -->
   </div>
 </template>
 
@@ -52,7 +52,8 @@ const data = reactive({
   isNextVisible: false,
   filters: {
     sex: { id: 0, title: "Любой" },
-    age: { id: 0, title: "Любой" },
+    max_age: null,
+    min_age: null,
     city: { id: 0, title: "Любой" },
   },
   cities: "",
@@ -63,6 +64,38 @@ const count = 10;
 
 async function filter() {
   data.isNextVisible = false;
+  let result = [];
+
+  const members = await fetchMembers();
+
+  while (result.length < count && offset < members.count) {
+    const members = await fetchMembers();
+
+    const response = await $fetch(`/api/users/info`, {
+      method: "POST",
+      body: { user_ids: members },
+    });
+
+    let membersInfo = response.users;
+    let localResult = membersInfo;
+
+    if (data.filters.sex.id !== 0)
+      localResult = membersInfo.filter((member) => member?.sex === data.filters.sex.id);
+    if (data.filters.city.id !== 0)
+      localResult = localResult.filter((member) => member?.city?.title === data.filters.city.title);
+
+    result.push(...localResult);
+
+    offset += count;
+  }
+
+  data.isNextVisible = true;
+  data.info = result;
+  data.errorMessage = "";
+  offset = 0;
+}
+
+const fetchMembers = async () => {
   const { members, error } = await $fetch(
     `/api/groups/members?group_id=${groupId.value}&offset=${offset}&count=${count}`
   );
@@ -70,20 +103,23 @@ async function filter() {
     data.errorMessage = error.message;
     return;
   }
-  data.isNextVisible = true;
-  data.info = members;
-  data.errorMessage = "";
-  offset += count;
-}
+  return members;
+};
 
 const changeSexFilter = (option) => {
   data.filters.sex = option;
 };
-const changeAgeFilter = (option) => {
-  data.filters.age = option;
-};
+
 const changeCityFilter = (option) => {
   data.filters.city = option;
+};
+
+const setMinAge = (event) => {
+  data.filters.min_age = event.target.value;
+};
+
+const setMaxAge = (event) => {
+  data.filters.max_age = event.target.value;
 };
 
 onMounted(async () => {
