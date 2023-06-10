@@ -66,10 +66,11 @@ async function filter() {
   data.isNextVisible = false;
   let result = [];
 
-  const members = await fetchMembers();
+  const members = await fetchMembers(offset, count);
 
   while (result.length < count && offset < members.count) {
-    const members = await fetchMembers();
+    let delta = count - result.length;
+    const members = await fetchMembers(offset, delta);
 
     const response = await $fetch(`/api/users/info`, {
       method: "POST",
@@ -86,7 +87,7 @@ async function filter() {
 
     result.push(...localResult);
 
-    offset += count;
+    offset += delta;
   }
 
   data.isNextVisible = true;
@@ -95,9 +96,9 @@ async function filter() {
   offset = 0;
 }
 
-const fetchMembers = async () => {
+const fetchMembers = async (_offset, _count) => {
   const { members, error } = await $fetch(
-    `/api/groups/members?group_id=${groupId.value}&offset=${offset}&count=${count}`
+    `/api/groups/members?group_id=${groupId.value}&offset=${_offset}&count=${_count}`
   );
   if (error) {
     data.errorMessage = error.message;
