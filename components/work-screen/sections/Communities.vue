@@ -61,7 +61,9 @@
 </template>
 
 <script setup>
-const groupId = ref(189070492);
+import { countAgeByBDate } from "@/composables/useCounters";
+
+const groupId = ref();
 const isFetching = ref(false);
 
 const data = reactive({
@@ -98,12 +100,22 @@ async function filter(offset) {
     let membersInfo = response.users;
     let localResult = membersInfo;
 
-    console.log(membersInfo);
-
     if (data.filters.sex.id !== 0)
       localResult = membersInfo.filter((member) => member?.sex === data.filters.sex.id);
     if (data.filters.city.id !== 0)
       localResult = localResult.filter((member) => member?.city?.title === data.filters.city.title);
+    if (data.filters.max_age) {
+      localResult = localResult.filter(
+        (member) =>
+          countAgeByBDate(member?.bdate) && countAgeByBDate(member?.bdate) <= data.filters.max_age
+      );
+    }
+    if (data.filters.min_age) {
+      localResult = localResult.filter(
+        (member) =>
+          countAgeByBDate(member?.bdate) && countAgeByBDate(member?.bdate) >= data.filters.min_age
+      );
+    }
 
     data.result.push(...localResult);
     offset += data.count;
