@@ -3,7 +3,9 @@
     <h3 class="section mb-4">Fiter members</h3>
     <div class="input-group mb-3">
       <input type="text" placeholder="Group id" v-model="groupId" class="form-control" />
-      <button @click="filter" class="btn btn-primary" type="button" id="button-addon2">Show</button>
+      <button @click="filter(0)" class="btn btn-primary" type="button" id="button-addon2">
+        Show
+      </button>
     </div>
     <div class="error-message text-danger">{{ data.errorMessage }}</div>
     <div class="community-filters">
@@ -27,29 +29,45 @@
         <input type="number" min="1" max="99" maxlength="2" @change="setMaxAge" />
       </div>
     </div>
-    <div v-if="data.info" class="communities__result">
-      <div class="community-members-count fs-4">Количество участников: {{ data.info.count }}</div>
+    <div v-if="isFetching">Loading...</div>
+    <div v-else-if="data.result.length" class="communities__result">
+      <div class="community-members-count fs-4">Количество участников: {{ data.membersCount }}</div>
       <div class="community-members-resut-header fs-4 fw-bolder mt-2 mb-1">Результат запроса:</div>
-      <UserCard v-for="member in data.info" :user-info="member" :key="member" />
+      <UserCard v-for="member in data.displayedMembers" :user-info="member" :key="member" />
+      <nav aria-label="Page navigation example">
+        <ul class="pagination">
+          <li class="page-item">
+            <a
+              :class="`page-link ${data.currentPage > 1 ? '' : 'disabled'}`"
+              @click="goToPreviousPage"
+              href="#"
+              >Previous</a
+            >
+          </li>
+          <li class="page-item">
+            <a
+              @click="goToNextPage"
+              :class="`page-link ${
+                data.maxPage && data.currentPage === data.maxPage ? 'disabled' : ''
+              }`"
+              href="#"
+              >Next</a
+            >
+          </li>
+        </ul>
+      </nav>
     </div>
-    <!-- <button
-      v-if="data.isNextVisible"
-      @click="filter"
-      class="btn btn-primary"
-      type="button"
-      id="button-addon2">
-      Next
-    </button> -->
   </div>
 </template>
 
 <script setup>
-const groupId = ref();
+const groupId = ref(189070492);
+const isFetching = ref(false);
 
 const data = reactive({
-  info: null,
+  result: [],
+  displayedMembers: [],
   errorMessage: "",
-  isNextVisible: false,
   filters: {
     sex: { id: 0, title: "Любой" },
     max_age: null,
@@ -57,20 +75,20 @@ const data = reactive({
     city: { id: 0, title: "Любой" },
   },
   cities: "",
+  count: 10,
+  currentOffset: 0,
+  currentPage: 1,
+  membersCount: 0,
+  maxPage: null,
 });
 
-let offset = 0;
-const count = 10;
+async function filter(offset) {
+  isFetching.value = true;
+  const members = await fetchMembers(offset, data.count);
+  data.membersCount = members.count;
 
-async function filter() {
-  data.isNextVisible = false;
-  let result = [];
-
-  const members = await fetchMembers(offset, count);
-
-  while (result.length < count && offset < members.count) {
-    let delta = count - result.length;
-    const members = await fetchMembers(offset, delta);
+  while (data.result.length < data.currentPage * 10 && offset < data.membersCount) {
+    const members = await fetchMembers(offset, data.count);
 
     const response = await $fetch(`/api/users/info`, {
       method: "POST",
@@ -80,31 +98,56 @@ async function filter() {
     let membersInfo = response.users;
     let localResult = membersInfo;
 
+    console.log(membersInfo);
+
     if (data.filters.sex.id !== 0)
       localResult = membersInfo.filter((member) => member?.sex === data.filters.sex.id);
     if (data.filters.city.id !== 0)
       localResult = localResult.filter((member) => member?.city?.title === data.filters.city.title);
 
-    result.push(...localResult);
-
-    offset += delta;
+    data.result.push(...localResult);
+    offset += data.count;
   }
 
-  data.isNextVisible = true;
-  data.info = result;
+  const end = data.currentPage * data.count;
+  const start = end - data.count;
+  data.displayedMembers = data.result.slice(start, end);
   data.errorMessage = "";
-  offset = 0;
+  isFetching.value = false;
+  data.currentOffset = offset;
+  if (offset > data.membersCount) {
+    data.maxPage = data.currentPage;
+  }
 }
 
-const fetchMembers = async (_offset, _count) => {
+const fetchMembers = async (offset, count) => {
   const { members, error } = await $fetch(
-    `/api/groups/members?group_id=${groupId.value}&offset=${_offset}&count=${_count}`
+    `/api/groups/members?group_id=${groupId.value}&offset=${offset}&count=${count}`
   );
   if (error) {
     data.errorMessage = error.message;
     return;
   }
   return members;
+};
+
+const goToNextPage = async () => {
+  data.currentPage++;
+  const end = data.currentPage * data.count;
+  const start = end - data.count;
+
+  if (data.result.length < end) {
+    await filter(data.currentOffset);
+  } else {
+    data.displayedMembers = data.result.slice(start, end);
+  }
+};
+
+const goToPreviousPage = async () => {
+  data.currentPage--;
+  const end = data.currentPage * data.count;
+  const start = end - data.count;
+  data.displayedMembers = data.result.slice(start, end);
 };
 
 const changeSexFilter = (option) => {
