@@ -3,20 +3,28 @@ import { DirectAuthorization, officialAppCredentials } from "@vk-io/authorizatio
 
 const callbackService = new CallbackService();
 
-const direct = new DirectAuthorization({
-  callbackService,
-  scope: "all",
-  ...officialAppCredentials.android,
-  login: process.env.LOGIN,
-  password: process.env.PASSWORD,
-  apiVersion: "5.131",
-});
+export default class vkAuth {
+  constructor(login, password) {
+    this.login = login;
+    this.password = password;
+  }
 
-export async function run() {
-  try {
-    const response = await direct.run();
-    return response;
-  } catch (error) {
-    throw new Error(error);
+  async runAuth() {
+    try {
+      const direct = new DirectAuthorization({
+        callbackService,
+        scope: "all",
+        ...officialAppCredentials.android,
+        login: this.login,
+        password: this.password,
+        apiVersion: "5.131",
+      });
+
+      const response = await direct.run();
+
+      return response;
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 }

@@ -1,11 +1,34 @@
 <template>
-  <div class="auth">
+  <div ref="auth" class="auth">
     <div class="auth-content">
       <img src="~/assets/images/icons8-vk-500.png" alt="" />
-      <div class="auth-warning">
-        Для корректной работы приложению необходимы некоторые данные вашего аккаунта ВКонтакте
-      </div>
-      <button @click="auth" class="auth-button btn bg-black text-white">
+      <Transition name="appear" mode="out-in">
+        <div v-if="!isActive" class="auth-warning">
+          Для корректной работы приложению необходимы некоторые данные вашего аккаунта ВКонтакте
+        </div>
+        <div v-else class="auth-form mt-4">
+          <div class="form-group mb-3">
+            <label for="login-input" class="mb-2">Your VK login</label>
+            <input
+              type="text"
+              class="form-control form-control-lg"
+              id="login-input"
+              placeholder="89771234567"
+              v-model="login" />
+          </div>
+          <div class="form-group">
+            <label for="password-input" class="mb-2">Your VK password</label>
+            <input
+              type="password"
+              class="form-control form-control-lg"
+              id="password-input"
+              placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;"
+              v-model="password" />
+          </div>
+        </div>
+      </Transition>
+      <div class="error-message text-danger mt-3 mb-2">{{ errorMessage }}</div>
+      <button @click="buttonAction" class="auth-button btn bg-black text-white">
         <div class="d-flex align-items-center">
           <svg
             fill="#ffffff"
@@ -36,10 +59,19 @@
 <script setup>
 const localPath = useLocalePath();
 const config = useRuntimeConfig();
+const auth = ref();
+const isActive = ref(false);
+const buttonAction = ref(changeAuthView);
+const errorMessage = ref();
+const login = ref();
+const password = ref();
 
-const auth = async () => {
+async function signIn() {
   try {
-    const data = await $fetch("/api/auth");
+    const data = await $fetch("/api/auth", {
+      method: "POST",
+      body: { login: login.value, password: password.value },
+    });
     if (data?.token) {
       config.public.token = data.token;
       localStorage.setItem("user", JSON.stringify(data));
@@ -47,9 +79,16 @@ const auth = async () => {
     }
     throw new Error("Unexpected error");
   } catch (error) {
-    console.error(error);
+    console.error(error.response);
+    errorMessage.value = error.response._data.message;
   }
-};
+}
+
+function changeAuthView() {
+  auth.value.classList.add("_active");
+  buttonAction.value = signIn;
+  isActive.value = true;
+}
 </script>
 
 <style lang="scss" scoped>
@@ -65,11 +104,36 @@ const auth = async () => {
 }
 .auth-content {
   max-width: 500px;
+  & img {
+    width: 100%;
+    object-fit: contain;
+  }
 }
 .auth-button {
   font-weight: 600;
 }
 .auth-button-icon {
   margin-right: 5px;
+}
+.auth._active {
+  .auth-content {
+    max-width: 400px;
+  }
+}
+.auth-form {
+  text-align: left;
+}
+.appear-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.appear-leave-active {
+  transition: all 0.3s ease-out;
+}
+
+.appear-enter-from,
+.appear-leave-to {
+  transform: translateX(-30px);
+  opacity: 0;
 }
 </style>
