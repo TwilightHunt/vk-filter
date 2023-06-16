@@ -1,8 +1,13 @@
 <template>
   <div ref="communities" class="communities p-4">
-    <h3 class="section mb-4">Fiter members</h3>
+    <h3 class="section mb-4">Filter members</h3>
     <div class="input-group mb-3">
-      <input type="text" placeholder="Group id" v-model="groupId" class="form-control" />
+      <input
+        type="text"
+        placeholder="Group id"
+        v-model="groupId"
+        class="form-control"
+        @change="setToDefault" />
       <button @click="filter(0)" class="btn btn-primary" type="button" id="button-addon2">
         Show
       </button>
@@ -84,6 +89,15 @@ const data = reactive({
   maxPage: null,
 });
 
+const setToDefault = () => {
+  data.currentOffset = 0;
+  data.currentPage = 1;
+  data.membersCount = 0;
+  data.maxPage = null;
+  data.result = [];
+  data.displayedMembers = [];
+};
+
 async function filter(offset) {
   isFetching.value = true;
   const members = await fetchMembers(offset, data.count);
@@ -164,18 +178,22 @@ const goToPreviousPage = async () => {
 
 const changeSexFilter = (option) => {
   data.filters.sex = option;
+  setToDefault();
 };
 
 const changeCityFilter = (option) => {
   data.filters.city = option;
+  setToDefault();
 };
 
 const setMinAge = (event) => {
   data.filters.min_age = event.target.value;
+  setToDefault();
 };
 
 const setMaxAge = (event) => {
   data.filters.max_age = event.target.value;
+  setToDefault();
 };
 
 onMounted(async () => {
