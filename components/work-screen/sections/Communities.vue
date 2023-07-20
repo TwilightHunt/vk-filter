@@ -7,8 +7,14 @@
         placeholder="Group id"
         v-model="groupId"
         class="form-control"
-        @change="setToDefault" />
-      <button @click="filter(0)" class="btn btn-primary" type="button" id="button-addon2">
+        @change="setToDefault"
+      />
+      <button
+        @click="filter(0)"
+        class="btn btn-primary"
+        type="button"
+        id="button-addon2"
+      >
         Show
       </button>
     </div>
@@ -19,26 +25,62 @@
         :options="genders"
         :default="data.filters.sex"
         class="mb-3"
-        @onSelectedOption="changeSexFilter" />
+        @onSelectedOption="changeSexFilter"
+      />
       <FilterDropdown
         filter="Город"
-        :options="[{ id: 0, title: 'Любой' }, ...data.cities, { id: -1, title: 'Другой...' }]"
+        :options="[
+          { id: 0, title: 'Любой' },
+          ...data.cities,
+          { id: -1, title: 'Другой...' },
+        ]"
         :default="data.filters.city"
         @onSelectedOption="changeCityFilter"
-        class="mb-3" />
+        class="mb-3"
+      />
       <div>
         <div class="fs-5 mb-3">Возраст</div>
         <span class="me-2">От: </span>
-        <input type="number" min="1" max="99" maxlength="2" @change="setMinAge" />
+        <input
+          type="number"
+          min="1"
+          max="99"
+          maxlength="2"
+          @change="setMinAge"
+        />
         <span class="me-2 ms-5">До: </span>
-        <input type="number" min="1" max="99" maxlength="2" @change="setMaxAge" />
+        <input
+          type="number"
+          min="1"
+          max="99"
+          maxlength="2"
+          @change="setMaxAge"
+        />
+      </div>
+      <div class="mt-3">
+        <CommonCheckbox
+          label="Скрывать удаленные аккаунты"
+          v-model="data.filters.isSkipDeleted"
+        />
+        <CommonCheckbox
+          label="Скрывать закрытые аккаунты"
+          v-model="data.filters.isSkipClosed"
+        />
       </div>
     </div>
     <div v-if="isFetching">Loading...</div>
     <div v-else-if="data.result.length" class="communities__result">
-      <div class="community-members-count fs-4">Количество участников: {{ data.membersCount }}</div>
-      <div class="community-members-resut-header fs-4 fw-bolder mt-2 mb-1">Результат запроса:</div>
-      <UserCard v-for="member in data.displayedMembers" :user-info="member" :key="member" />
+      <div class="community-members-count fs-4">
+        Количество участников: {{ data.membersCount }}
+      </div>
+      <div class="community-members-resut-header fs-4 fw-bolder mt-2 mb-1">
+        Результат запроса:
+      </div>
+      <UserCard
+        v-for="member in data.displayedMembers"
+        :user-info="member"
+        :key="member"
+      />
       <nav aria-label="Page navigation example">
         <ul class="pagination">
           <li class="page-item">
@@ -53,7 +95,9 @@
             <a
               @click="goToNextPage"
               :class="`page-link ${
-                data.maxPage && data.currentPage === data.maxPage ? 'disabled' : ''
+                data.maxPage && data.currentPage === data.maxPage
+                  ? 'disabled'
+                  : ''
               }`"
               href="#"
               >Next</a
@@ -67,7 +111,6 @@
 
 <script setup>
 import { countAgeByBDate } from "@/composables/useCounters";
-
 const groupId = ref();
 const isFetching = ref(false);
 
@@ -80,6 +123,8 @@ const data = reactive({
     max_age: null,
     min_age: null,
     city: { id: 0, title: "Любой" },
+    isSkipDeleted: true,
+    isSkipClosed: false,
   },
   cities: "",
   count: 10,
@@ -103,7 +148,10 @@ async function filter(offset) {
   const members = await fetchMembers(offset, data.count);
   data.membersCount = members.count;
 
-  while (data.result.length < data.currentPage * 10 && offset < data.membersCount) {
+  while (
+    data.result.length < data.currentPage * 10 &&
+    offset < data.membersCount
+  ) {
     const members = await fetchMembers(offset, data.count);
 
     const response = await $fetch(`/api/users/info`, {
@@ -115,20 +163,32 @@ async function filter(offset) {
     let localResult = membersInfo;
 
     if (data.filters.sex.id !== 0)
-      localResult = membersInfo.filter((member) => member?.sex === data.filters.sex.id);
+      localResult = membersInfo.filter(
+        (member) => member?.sex === data.filters.sex.id
+      );
     if (data.filters.city.id !== 0)
-      localResult = localResult.filter((member) => member?.city?.title === data.filters.city.title);
+      localResult = localResult.filter(
+        (member) => member?.city?.title === data.filters.city.title
+      );
     if (data.filters.max_age) {
       localResult = localResult.filter(
         (member) =>
-          countAgeByBDate(member?.bdate) && countAgeByBDate(member?.bdate) <= data.filters.max_age
+          countAgeByBDate(member?.bdate) &&
+          countAgeByBDate(member?.bdate) <= data.filters.max_age
       );
     }
     if (data.filters.min_age) {
       localResult = localResult.filter(
         (member) =>
-          countAgeByBDate(member?.bdate) && countAgeByBDate(member?.bdate) >= data.filters.min_age
+          countAgeByBDate(member?.bdate) &&
+          countAgeByBDate(member?.bdate) >= data.filters.min_age
       );
+    }
+    if (data.filters.isSkipClosed) {
+      localResult = localResult.filter((member) => !!member?.can_access_closed);
+    }
+    if (data.filters.isSkipDeleted) {
+      localResult = localResult.filter((member) => !!!member?.deactivated);
     }
 
     data.result.push(...localResult);

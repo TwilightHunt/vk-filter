@@ -5,7 +5,7 @@ export default defineEventHandler(async (event) => {
     const query = getQuery(event);
     const user = await vk.api.users.get({
       user_ids: [query.user_id],
-      fields: ["sex", "bdate", "city", "language", "domain", "music", "interests"],
+      fields: ["sex", "bdate", "city", "domain"],
     });
     return {
       user,
