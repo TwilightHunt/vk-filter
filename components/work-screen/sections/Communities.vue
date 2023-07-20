@@ -76,11 +76,13 @@
       <div class="community-members-resut-header fs-4 fw-bolder mt-2 mb-1">
         Результат запроса:
       </div>
-      <UserCard
-        v-for="member in data.displayedMembers"
-        :user-info="member"
-        :key="member"
-      />
+      <div class="community__results my-4">
+        <UserCard
+          v-for="member in data.displayedMembers"
+          :user-info="member"
+          :key="member"
+        />
+      </div>
       <nav aria-label="Page navigation example">
         <ul class="pagination">
           <li class="page-item">
@@ -161,6 +163,8 @@ async function filter(offset) {
 
     let membersInfo = response.users;
     let localResult = membersInfo;
+
+    console.log(response);
 
     if (data.filters.sex.id !== 0)
       localResult = membersInfo.filter(
@@ -274,4 +278,13 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.community {
+  &__results {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    column-gap: 1.5rem;
+    row-gap: 2rem;
+  }
+}
+</style>

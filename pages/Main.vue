@@ -2,7 +2,7 @@
   <div class="main">
     <Header />
     <div class="container">
-      <div class="row gx-lg-4 gx-md-2 gx-sm-1 gx-0">
+      <div class="row gx-lg-4 gx-md-2 gx-sm-1 gx-0 py-4">
         <div class="col">
           <Navigation />
         </div>

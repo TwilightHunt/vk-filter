@@ -8,10 +8,15 @@
         id="dropdownMenuButton"
         data-mdb-toggle="dropdown"
         aria-expanded="false"
-        @click="toggleDropdown">
+        @click="toggleDropdown"
+      >
         {{ props.default.title }}
       </button>
-      <div ref="menu" class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton">
+      <div
+        ref="menu"
+        class="dropdown-menu dropdown-menu-dark"
+        aria-labelledby="dropdownMenuButton"
+      >
         <a
           v-for="option in props.options"
           class="dropdown-item"
@@ -35,7 +40,7 @@ defineExpose({ menu });
 const props = defineProps({
   filter: String,
   options: Array,
-  default: String,
+  default: Object,
 });
 
 function toggleDropdown() {

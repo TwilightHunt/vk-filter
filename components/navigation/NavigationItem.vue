@@ -1,5 +1,7 @@
 <template>
-  <div class="navigation-item py-3 px-4" @click="setCurrentSection(component)">{{ title }}</div>
+  <div class="navigation-item py-3 px-4" @click="setCurrentSection(component)">
+    {{ title }}
+  </div>
 </template>
 
 <script>

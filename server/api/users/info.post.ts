@@ -6,7 +6,16 @@ export default defineEventHandler(async (event) => {
 
     const users = await vk.api.users.get({
       user_ids: body.user_ids.items,
-      fields: ["sex", "bdate", "city", "language", "domain", "music", "interests"],
+      fields: [
+        "sex",
+        "bdate",
+        "city",
+        "language",
+        "domain",
+        "music",
+        "interests",
+        "photo_200",
+      ],
     });
     return {
       users,
