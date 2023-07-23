@@ -61,10 +61,12 @@
         <CommonCheckbox
           label="Скрывать удаленные аккаунты"
           v-model="data.filters.isSkipDeleted"
+          @change="setToDefault"
         />
         <CommonCheckbox
           label="Скрывать закрытые аккаунты"
           v-model="data.filters.isSkipClosed"
+          @change="setToDefault"
         />
       </div>
     </div>
@@ -112,7 +114,7 @@
 </template>
 
 <script setup>
-import { countAgeByBDate } from "@/composables/useCounters";
+import { Filter } from "~/utils/filters";
 const groupId = ref();
 const isFetching = ref(false);
 
@@ -162,40 +164,18 @@ async function filter(offset) {
     });
 
     let membersInfo = response.users;
-    let localResult = membersInfo;
 
-    console.log(response);
+    const filter = new Filter(membersInfo);
 
-    if (data.filters.sex.id !== 0)
-      localResult = membersInfo.filter(
-        (member) => member?.sex === data.filters.sex.id
-      );
-    if (data.filters.city.id !== 0)
-      localResult = localResult.filter(
-        (member) => member?.city?.title === data.filters.city.title
-      );
-    if (data.filters.max_age) {
-      localResult = localResult.filter(
-        (member) =>
-          countAgeByBDate(member?.bdate) &&
-          countAgeByBDate(member?.bdate) <= data.filters.max_age
-      );
-    }
-    if (data.filters.min_age) {
-      localResult = localResult.filter(
-        (member) =>
-          countAgeByBDate(member?.bdate) &&
-          countAgeByBDate(member?.bdate) >= data.filters.min_age
-      );
-    }
-    if (data.filters.isSkipClosed) {
-      localResult = localResult.filter((member) => !!member?.can_access_closed);
-    }
-    if (data.filters.isSkipDeleted) {
-      localResult = localResult.filter((member) => !!!member?.deactivated);
-    }
+    if (data.filters.sex.id !== 0) filter.sex(data.filters.sex.id);
+    if (data.filters.city.id !== 0) filter.city(data.filters.city.id);
+    if (data.filters.max_age) filter.max_age(data.filters.max_age);
+    if (data.filters.min_age) filter.min_age(data.filters.min_age);
+    if (data.filters.isSkipClosed) filter.skipClosed();
+    if (data.filters.isSkipDeleted) filter.skipDeleted();
 
-    data.result.push(...localResult);
+    data.result.push(...filter.value);
+    console.log(filter.value);
     offset += data.count;
   }
 
