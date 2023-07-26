@@ -10,7 +10,7 @@
         aria-expanded="false"
         @click="toggleDropdown"
       >
-        {{ props.default.title }}
+        {{ props.modelValue.title }}
       </button>
       <div
         ref="menu"
@@ -22,10 +22,7 @@
           class="dropdown-item"
           href="#"
           :key="option.id"
-          @click="
-            $emit('onSelectedOption', option);
-            toggleDropdown();
-          "
+          @click="select(option)"
           >{{ option.title }}</a
         >
       </div>
@@ -36,15 +33,21 @@
 <script setup>
 const menu = ref();
 defineExpose({ menu });
+const emit = defineEmits(["update:modelValue"]);
 
 const props = defineProps({
   filter: String,
   options: Array,
-  default: Object,
+  modelValue: Object,
 });
 
 function toggleDropdown() {
   menu.value.classList.toggle("_opened");
+}
+
+function select(option) {
+  toggleDropdown();
+  emit("update:modelValue", option);
 }
 </script>
 

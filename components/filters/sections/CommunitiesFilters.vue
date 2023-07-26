@@ -3,13 +3,13 @@
     <FilterDropdown
       filter="Пол"
       :options="genders"
-      :default="currentFilter.sex"
+      v-model="currentFilter.sex"
       class="mb-3"
     />
     <FilterDropdown
       filter="Город"
       :options="data.cities"
-      :default="currentFilter.city"
+      v-model="currentFilter.city"
       class="mb-3"
     />
     <div>

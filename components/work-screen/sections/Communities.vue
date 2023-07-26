@@ -111,10 +111,7 @@ async function filter(offset) {
     });
 
     let membersInfo = response.users;
-
     const filter = new Filter(membersInfo);
-
-    console.log(currentFilter.value);
 
     if (currentFilter.value.sex.id !== 0)
       filter.sex(currentFilter.value.sex.id);
