@@ -19,57 +19,6 @@
       </button>
     </div>
     <div class="error-message text-danger">{{ data.errorMessage }}</div>
-    <div class="community-filters">
-      <FilterDropdown
-        filter="Пол"
-        :options="genders"
-        :default="data.filters.sex"
-        class="mb-3"
-        @onSelectedOption="changeSexFilter"
-      />
-      <FilterDropdown
-        filter="Город"
-        :options="[
-          { id: 0, title: 'Любой' },
-          ...data.cities,
-          { id: -1, title: 'Другой...' },
-        ]"
-        :default="data.filters.city"
-        @onSelectedOption="changeCityFilter"
-        class="mb-3"
-      />
-      <div>
-        <div class="fs-5 mb-3">Возраст</div>
-        <span class="me-2">От: </span>
-        <input
-          type="number"
-          min="1"
-          max="99"
-          maxlength="2"
-          @change="setMinAge"
-        />
-        <span class="me-2 ms-5">До: </span>
-        <input
-          type="number"
-          min="1"
-          max="99"
-          maxlength="2"
-          @change="setMaxAge"
-        />
-      </div>
-      <div class="mt-3">
-        <CommonCheckbox
-          label="Скрывать удаленные аккаунты"
-          v-model="data.filters.isSkipDeleted"
-          @change="setToDefault"
-        />
-        <CommonCheckbox
-          label="Скрывать закрытые аккаунты"
-          v-model="data.filters.isSkipClosed"
-          @change="setToDefault"
-        />
-      </div>
-    </div>
     <div v-if="isFetching">Loading...</div>
     <div v-else-if="data.result.length" class="communities__result">
       <div class="community-members-count fs-4">
@@ -115,21 +64,19 @@
 
 <script setup>
 import { Filter } from "~/utils/filters";
-const groupId = ref();
+import { storeToRefs } from "pinia";
+import { useFilterStore } from "@/store/filter";
+
+const store = useFilterStore();
+const { currentFilter } = storeToRefs(store);
+
+const groupId = ref(189070492);
 const isFetching = ref(false);
 
 const data = reactive({
   result: [],
   displayedMembers: [],
   errorMessage: "",
-  filters: {
-    sex: { id: 0, title: "Любой" },
-    max_age: null,
-    min_age: null,
-    city: { id: 0, title: "Любой" },
-    isSkipDeleted: true,
-    isSkipClosed: false,
-  },
   cities: "",
   count: 10,
   currentOffset: 0,
@@ -167,15 +114,20 @@ async function filter(offset) {
 
     const filter = new Filter(membersInfo);
 
-    if (data.filters.sex.id !== 0) filter.sex(data.filters.sex.id);
-    if (data.filters.city.id !== 0) filter.city(data.filters.city.id);
-    if (data.filters.max_age) filter.max_age(data.filters.max_age);
-    if (data.filters.min_age) filter.min_age(data.filters.min_age);
-    if (data.filters.isSkipClosed) filter.skipClosed();
-    if (data.filters.isSkipDeleted) filter.skipDeleted();
+    console.log(currentFilter.value);
+
+    if (currentFilter.value.sex.id !== 0)
+      filter.sex(currentFilter.value.sex.id);
+    if (currentFilter.value.city.id !== 0)
+      filter.city(currentFilter.value.city.id);
+    if (currentFilter.value.max_age)
+      filter.max_age(currentFilter.value.max_age);
+    if (currentFilter.value.min_age)
+      filter.min_age(currentFilter.value.min_age);
+    if (currentFilter.value.isSkipClosed) filter.skipClosed();
+    if (currentFilter.value.isSkipDeleted) filter.skipDeleted();
 
     data.result.push(...filter.value);
-    console.log(filter.value);
     offset += data.count;
   }
 
@@ -219,37 +171,6 @@ const goToPreviousPage = async () => {
   const start = end - data.count;
   data.displayedMembers = data.result.slice(start, end);
 };
-
-const changeSexFilter = (option) => {
-  data.filters.sex = option;
-  setToDefault();
-};
-
-const changeCityFilter = (option) => {
-  data.filters.city = option;
-  setToDefault();
-};
-
-const setMinAge = (event) => {
-  data.filters.min_age = event.target.value;
-  setToDefault();
-};
-
-const setMaxAge = (event) => {
-  data.filters.max_age = event.target.value;
-  setToDefault();
-};
-
-onMounted(async () => {
-  const res = await $fetch("/api/database/cities");
-  data.cities = res.cities;
-});
-
-const genders = [
-  { id: 0, title: "Любой" },
-  { id: 1, title: "Женский" },
-  { id: 2, title: "Мужской" },
-];
 </script>
 
 <script>
@@ -268,3 +189,4 @@ export default {
   }
 }
 </style>
+-->

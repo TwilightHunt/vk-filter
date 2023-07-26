@@ -4,9 +4,9 @@
     <div class="container">
       <div class="row gx-lg-4 gx-md-2 gx-sm-1 gx-0 py-4">
         <div class="col">
-          <Navigation />
+          <Filters />
         </div>
-        <div class="col-lg-10 col-md-9 col-sm-9 col-12">
+        <div class="col-lg-9 col-md-8 col-sm-7 col-11">
           <WorkScreen />
         </div>
       </div>

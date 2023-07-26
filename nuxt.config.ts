@@ -21,7 +21,7 @@ export default defineNuxtConfig({
       title: "VK Filter",
     },
   },
-  modules: ["@nuxtjs/i18n"],
+  modules: ["@nuxtjs/i18n", "@pinia/nuxt"],
   i18n: {
     vueI18n: "./i18n.config.ts",
     defaultLocale: "ru",

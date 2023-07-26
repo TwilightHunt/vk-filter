@@ -1,5 +1,8 @@
 <template>
-  <div class="navigation-item py-3 px-4" @click="setCurrentSection(component)">
+  <div
+    class="navigation-item py-3 px-4"
+    @click="setCurrentSection(component, filter)"
+  >
     {{ title }}
   </div>
 </template>
@@ -11,6 +14,7 @@ export default {
   props: {
     title: { type: String, requied: true },
     component: { requied: true },
+    filter: { requied: true },
   },
 };
 </script>
@@ -18,6 +22,5 @@ export default {
 <style lang="scss" scoped>
 .navigation-item {
   cursor: pointer;
-  display: block;
 }
 </style>
