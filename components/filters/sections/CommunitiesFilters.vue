@@ -35,12 +35,10 @@
       <CommonCheckbox
         label="Скрывать удаленные аккаунты"
         v-model="currentFilter.isSkipDeleted"
-        @change="setToDefault"
       />
       <CommonCheckbox
         label="Скрывать закрытые аккаунты"
         v-model="currentFilter.isSkipClosed"
-        @change="setToDefault"
       />
     </div>
   </div>

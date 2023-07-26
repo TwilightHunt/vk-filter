@@ -70,7 +70,7 @@ import { useFilterStore } from "@/store/filter";
 const store = useFilterStore();
 const { currentFilter } = storeToRefs(store);
 
-const groupId = ref(189070492);
+const groupId = ref();
 const isFetching = ref(false);
 
 const data = reactive({
@@ -168,6 +168,14 @@ const goToPreviousPage = async () => {
   const start = end - data.count;
   data.displayedMembers = data.result.slice(start, end);
 };
+
+watch(
+  currentFilter,
+  () => {
+    setToDefault();
+  },
+  { deep: true }
+);
 </script>
 
 <script>
@@ -186,4 +194,3 @@ export default {
   }
 }
 </style>
--->
