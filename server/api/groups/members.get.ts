@@ -13,9 +13,17 @@ export default defineEventHandler(async (event) => {
     return {
       members,
     };
-  } catch (error) {
+  } catch (error: any) {
+    let errorMessage = "";
+
+    if (error.code === 100) {
+      errorMessage = "Неверный формат id";
+    } else if (error.code === 203) {
+      errorMessage = "Доступ к сообществу запрещен";
+    }
+
     return {
-      error,
+      error: errorMessage || error.message,
     };
   }
 });

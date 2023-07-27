@@ -97,51 +97,57 @@ const setToDefault = () => {
   if (groupId.value) {
     data.isShowButtonActive = true;
   }
+  data.errorMessage = "";
 };
 
 async function filter(offset) {
-  data.isShowButtonActive = false;
-  isFetching.value = true;
-  const members = await fetchMembers(offset, data.count);
-  data.membersCount = members.count;
-
-  while (
-    data.result.length < data.currentPage * 10 &&
-    offset < data.membersCount
-  ) {
+  try {
+    data.isShowButtonActive = false;
+    isFetching.value = true;
     const members = await fetchMembers(offset, data.count);
+    data.membersCount = members.count;
 
-    const response = await $fetch(`/api/users/info`, {
-      method: "POST",
-      body: { user_ids: members },
-    });
+    while (
+      data.result.length < data.currentPage * 10 &&
+      offset < data.membersCount
+    ) {
+      const members = await fetchMembers(offset, data.count);
 
-    let membersInfo = response.users;
-    const filter = new Filter(membersInfo);
+      const response = await $fetch(`/api/users/info`, {
+        method: "POST",
+        body: { user_ids: members },
+      });
 
-    if (currentFilter.value.sex.id !== 0)
-      filter.sex(currentFilter.value.sex.id);
-    if (currentFilter.value.city.id !== 0)
-      filter.city(currentFilter.value.city.id);
-    if (currentFilter.value.max_age)
-      filter.max_age(currentFilter.value.max_age);
-    if (currentFilter.value.min_age)
-      filter.min_age(currentFilter.value.min_age);
-    if (currentFilter.value.isSkipClosed) filter.skipClosed();
-    if (currentFilter.value.isSkipDeleted) filter.skipDeleted();
+      let membersInfo = response.users;
+      const filter = new Filter(membersInfo);
 
-    data.result.push(...filter.value);
-    offset += data.count;
-  }
+      if (currentFilter.value.sex.id !== 0)
+        filter.sex(currentFilter.value.sex.id);
+      if (currentFilter.value.city.id !== 0)
+        filter.city(currentFilter.value.city.id);
+      if (currentFilter.value.max_age)
+        filter.max_age(currentFilter.value.max_age);
+      if (currentFilter.value.min_age)
+        filter.min_age(currentFilter.value.min_age);
+      if (currentFilter.value.isSkipClosed) filter.skipClosed();
+      if (currentFilter.value.isSkipDeleted) filter.skipDeleted();
 
-  const end = data.currentPage * data.count;
-  const start = end - data.count;
-  data.displayedMembers = data.result.slice(start, end);
-  data.errorMessage = "";
-  isFetching.value = false;
-  data.currentOffset = offset;
-  if (offset > data.membersCount) {
-    data.maxPage = data.currentPage;
+      data.result.push(...filter.value);
+      offset += data.count;
+    }
+
+    const end = data.currentPage * data.count;
+    const start = end - data.count;
+    data.displayedMembers = data.result.slice(start, end);
+    data.errorMessage = "";
+    isFetching.value = false;
+    data.currentOffset = offset;
+    if (offset > data.membersCount) {
+      data.maxPage = data.currentPage;
+    }
+  } catch (error) {
+    data.errorMessage = error;
+    isFetching.value = false;
   }
 }
 
@@ -149,9 +155,9 @@ const fetchMembers = async (offset, count) => {
   const { members, error } = await $fetch(
     `/api/groups/members?group_id=${groupId.value}&offset=${offset}&count=${count}`
   );
+
   if (error) {
-    data.errorMessage = error.message;
-    return;
+    throw new Error(error);
   }
   return members;
 };
