@@ -7,13 +7,14 @@
         placeholder="Group id"
         v-model="groupId"
         class="form-control"
-        @change="setToDefault"
+        @input="setToDefault"
       />
       <button
         @click="filter(0)"
         class="btn btn-primary"
         type="button"
         id="button-addon2"
+        :disabled="!data.isShowButtonActive"
       >
         Show
       </button>
@@ -83,6 +84,7 @@ const data = reactive({
   currentPage: 1,
   membersCount: 0,
   maxPage: null,
+  isShowButtonActive: false,
 });
 
 const setToDefault = () => {
@@ -92,9 +94,13 @@ const setToDefault = () => {
   data.maxPage = null;
   data.result = [];
   data.displayedMembers = [];
+  if (groupId) {
+    data.isShowButtonActive = true;
+  }
 };
 
 async function filter(offset) {
+  data.isShowButtonActive = false;
   isFetching.value = true;
   const members = await fetchMembers(offset, data.count);
   data.membersCount = members.count;
