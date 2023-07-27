@@ -2,18 +2,33 @@
   <div class="main">
     <Header />
     <div class="container">
-      <div class="row gx-lg-4 gx-md-2 gx-sm-1 gx-0 py-4">
-        <div class="col">
-          <Filters />
+      <div class="row gap-3 py-4">
+        <Filters class="col" />
+        <div @click="openFilters" class="d-flex d-md-none filters-btn">
+          <IconsFilter /> Показать фильтры
         </div>
-        <div class="col-lg-9 col-md-8 col-sm-7 col-11">
-          <WorkScreen />
-        </div>
+        <WorkScreen class="col-lg-9 col-md-8 col-sm-12 col-12" />
       </div>
     </div>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+const openFilters = () => {
+  const filter = document.getElementById("filter");
+  filter.classList.add("show");
+};
+</script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.filters-btn {
+  font-size: 1.2rem;
+  text-decoration: underline;
+  line-height: 25px;
+  align-items: center;
+  column-gap: 0.5rem;
+  &:active {
+    text-decoration: none;
+  }
+}
+</style>
