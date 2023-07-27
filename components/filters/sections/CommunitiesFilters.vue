@@ -20,7 +20,7 @@
         min="1"
         max="99"
         maxlength="2"
-        v-model="currentFilter.max_age"
+        v-model="currentFilter.min_age"
       />
       <span class="me-2 ms-5">До: </span>
       <input
@@ -28,7 +28,7 @@
         min="1"
         max="99"
         maxlength="2"
-        v-model="currentFilter.min_age"
+        v-model="currentFilter.max_age"
       />
     </div>
     <div class="mt-3">
