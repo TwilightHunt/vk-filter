@@ -94,7 +94,7 @@ const setToDefault = () => {
   data.maxPage = null;
   data.result = [];
   data.displayedMembers = [];
-  if (groupId) {
+  if (groupId.value) {
     data.isShowButtonActive = true;
   }
 };

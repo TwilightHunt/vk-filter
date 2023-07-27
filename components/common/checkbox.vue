@@ -18,7 +18,6 @@ const id = ref();
 
 onMounted(() => {
   id.value = "checkbox" + Math.random().toString(16).slice(2);
-  console.log(id.value);
 });
 defineProps({
   label: String,
@@ -28,7 +27,7 @@ defineProps({
 const emit = defineEmits(["update:modelValue"]);
 
 const onChange = (event) => {
-  emit("update:modelValue", event.target.value);
+  emit("update:modelValue", event.target.checked);
 };
 </script>
 
