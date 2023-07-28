@@ -10,7 +10,7 @@
         aria-expanded="false"
         @click="toggleDropdown"
       >
-        {{ modelValue?.title || modelValue }}
+        {{ modelValue.title ?? modelValue.code }}
       </button>
       <div
         ref="menu"
@@ -22,7 +22,7 @@
           class="dropdown-item"
           href="#"
           :key="option.id ?? option.code"
-          @click="select(option)"
+          @click.prevent="select(option)"
           >{{ option.title ?? option.name }}</a
         >
       </div>

@@ -13,7 +13,7 @@
       </nav>
       <CommonDropdown
         :options="locales"
-        v-model="locale"
+        v-model="localeProperties"
         @onChange="switchLanguage"
       />
     </div>
@@ -27,7 +27,7 @@ import Users from "@/components/work-screen/sections/Users.vue";
 import CommunitiesFilters from "./filters/sections/CommunitiesFilters.vue";
 
 const switchLocalePath = useSwitchLocalePath();
-const { locale, locales } = useI18n();
+const { locales, localeProperties } = useI18n();
 
 const router = useRouter();
 
