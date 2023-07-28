@@ -1,13 +1,13 @@
 <template>
   <div class="community-filters" v-if="currentFilter">
-    <FilterDropdown
-      filter="Пол"
+    <CommonDropdown
+      title="Пол"
       :options="genders"
       v-model="currentFilter.sex"
       class="mb-3"
     />
-    <FilterDropdown
-      filter="Город"
+    <CommonDropdown
+      title="Город"
       :options="data.cities"
       v-model="currentFilter.city"
       class="mb-3"

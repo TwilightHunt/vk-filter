@@ -24,8 +24,8 @@ export class Filter {
     this.value = this.value.filter((member) => member?.sex === id);
     return this;
   }
-  city(title) {
-    this.value = this.value.filter((member) => member?.city?.title === title);
+  city(id) {
+    this.value = this.value.filter((member) => member?.city?.id === id);
     return this;
   }
   skipClosed() {

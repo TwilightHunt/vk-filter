@@ -11,7 +11,11 @@
         <NavigationItem :title="$t('users')" :component="Users" />
         <NavigationItem :title="$t('posts')" :component="Posts" />
       </nav>
-      <LangSwitch />
+      <CommonDropdown
+        :options="locales"
+        v-model="locale"
+        @onChange="switchLanguage"
+      />
     </div>
   </div>
 </template>
@@ -20,8 +24,16 @@
 import Communities from "@/components/work-screen/sections/Communities.vue";
 import Posts from "@/components/work-screen/sections/Posts.vue";
 import Users from "@/components/work-screen/sections/Users.vue";
-import NavigationItem from "./NavigationItem.vue";
 import CommunitiesFilters from "./filters/sections/CommunitiesFilters.vue";
+
+const switchLocalePath = useSwitchLocalePath();
+const { locale, locales } = useI18n();
+
+const router = useRouter();
+
+const switchLanguage = (option) => {
+  router.push(switchLocalePath(option.code));
+};
 </script>
 
 <style lang="scss" scoped></style>

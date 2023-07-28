@@ -1,6 +1,6 @@
 <template>
-  <div class="d-flex align-items-center">
-    <div class="me-2 fs-5">{{ props.filter }}</div>
+  <div v-on-click-outside="closeDropdown" class="d-flex align-items-center">
+    <div class="me-2 fs-5">{{ title }}</div>
     <div class="dropdown">
       <button
         class="btn btn-dark dropdown-toggle"
@@ -10,7 +10,7 @@
         aria-expanded="false"
         @click="toggleDropdown"
       >
-        {{ props.modelValue.title }}
+        {{ modelValue?.title || modelValue }}
       </button>
       <div
         ref="menu"
@@ -18,12 +18,12 @@
         aria-labelledby="dropdownMenuButton"
       >
         <a
-          v-for="option in props.options"
+          v-for="option in options"
           class="dropdown-item"
           href="#"
-          :key="option.id"
+          :key="option.id ?? option.code"
           @click="select(option)"
-          >{{ option.title }}</a
+          >{{ option.title ?? option.name }}</a
         >
       </div>
     </div>
@@ -31,23 +31,29 @@
 </template>
 
 <script setup>
+import { vOnClickOutside } from "@vueuse/components";
 const menu = ref();
 defineExpose({ menu });
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits(["update:modelValue", "onChange"]);
 
 const props = defineProps({
-  filter: String,
+  title: String,
   options: Array,
   modelValue: Object,
 });
+
+function select(option) {
+  toggleDropdown();
+  emit("update:modelValue", option);
+  emit("onChange", option);
+}
 
 function toggleDropdown() {
   menu.value.classList.toggle("_opened");
 }
 
-function select(option) {
-  toggleDropdown();
-  emit("update:modelValue", option);
+function closeDropdown() {
+  menu.value.classList.remove("_opened");
 }
 </script>
 
