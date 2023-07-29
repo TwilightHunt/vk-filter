@@ -1,34 +1,38 @@
 <template>
   <div class="community-filters" v-if="currentFilter">
-    <CommonDropdown
-      title="Пол"
-      :options="genders"
-      v-model="currentFilter.sex"
-      class="mb-3"
-    />
-    <CommonDropdown
-      title="Город"
-      :options="data.cities"
-      v-model="currentFilter.city"
-      class="mb-3"
-    />
+    <div class="filter-dropdown">
+      <div class="filter-dropdown__title">Пол:</div>
+      <CommonDropdown
+        :options="genders"
+        v-model="currentFilter.sex"
+        class="mb-3 filter-dropdown"
+      />
+    </div>
+    <div class="filter-dropdown">
+      <div class="filter-dropdown__title">Город:</div>
+      <CommonDropdown
+        :options="data.cities"
+        v-model="currentFilter.city"
+        class="mb-3 filter-dropdown"
+      />
+    </div>
     <div>
       <div class="fs-5 mb-3">Возраст</div>
       <span class="me-2">От: </span>
       <input
-        type="number"
-        min="1"
-        max="99"
-        maxlength="2"
+        type="text"
+        v-maska:[age]
+        data-maska="###"
         v-model="currentFilter.min_age"
+        class="age-input"
       />
       <span class="me-2 ms-5">До: </span>
       <input
-        type="number"
-        min="1"
-        max="99"
-        maxlength="2"
+        type="text"
+        v-maska:[age]
+        data-maska="###"
         v-model="currentFilter.max_age"
+        class="age-input"
       />
     </div>
     <div class="mt-3">
@@ -50,6 +54,7 @@ import { useFilterStore } from "@/store/filter";
 import { genders } from "~/types/filters";
 const store = useFilterStore();
 const { currentFilter } = storeToRefs(store);
+import { age } from "~/utils/maska/age.js";
 
 const baseFilter = {
   sex: { id: 0, title: "Любой" },
@@ -69,3 +74,11 @@ onMounted(async () => {
   data.cities = await store.getCitiesFromDatabase();
 });
 </script>
+
+<style lang="scss">
+.filter-dropdown {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  align-items: baseline;
+}
+</style>

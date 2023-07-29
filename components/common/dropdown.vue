@@ -1,9 +1,8 @@
 <template>
-  <div v-on-click-outside="closeDropdown" class="d-flex align-items-center">
-    <div class="me-2 fs-5">{{ title }}</div>
+  <div v-on-click-outside="closeDropdown">
     <div class="dropdown">
       <button
-        class="btn btn-dark dropdown-toggle"
+        class="btn btn-dark dropdown-toggle d-flex align-items-center gap-1"
         type="button"
         id="dropdownMenuButton"
         data-mdb-toggle="dropdown"
@@ -37,7 +36,6 @@ defineExpose({ menu });
 const emit = defineEmits(["update:modelValue", "onChange"]);
 
 const props = defineProps({
-  title: String,
   options: Array,
   modelValue: Object,
 });

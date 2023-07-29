@@ -25,6 +25,7 @@
     "@vueuse/core": "^10.2.1",
     "@vueuse/nuxt": "^10.2.1",
     "bootstrap": "^5.2.3",
+    "maska": "^2.1.9",
     "pinia": "^2.1.4",
     "vk-io": "^4.8.3"
   },

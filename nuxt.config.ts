@@ -14,7 +14,7 @@ export default defineNuxtConfig({
       token: process.env.TOKEN,
     },
   },
-  css: ["bootstrap/dist/css/bootstrap.min.css", "~~/css/global.css"],
+  css: ["bootstrap/dist/css/bootstrap.min.css", "~~/css/global.scss"],
   app: {
     head: {
       link: [{ rel: "stylesheet", href: "favicon.ico" }],
