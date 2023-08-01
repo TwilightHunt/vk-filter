@@ -5,8 +5,7 @@
       :placeholder="inputPlaceholder"
       v-model="groupId"
       class="form-control"
-      @input="$emit('onInput')"
-      @change="onChange"
+      @input="onChange"
     />
     <button
       @click="$emit('onShowClicked')"
@@ -31,6 +30,7 @@ const emit = defineEmits(["update:modelValue"]);
 
 const onChange = (event) => {
   emit("update:modelValue", event.target.value);
+  emit("onInput");
 };
 </script>
 
