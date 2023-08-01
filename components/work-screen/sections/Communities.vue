@@ -1,24 +1,13 @@
 <template>
   <div ref="communities" class="communities p-4">
     <h3 class="section mb-4">Filter members</h3>
-    <div class="input-group mb-3">
-      <input
-        type="text"
-        placeholder="Group id"
-        v-model="groupId"
-        class="form-control"
-        @input="setToDefault"
-      />
-      <button
-        @click="filter(0)"
-        class="btn btn-primary"
-        type="button"
-        id="button-addon2"
-        :disabled="!data.isShowButtonActive"
-      >
-        Show
-      </button>
-    </div>
+    <InputGroup
+      :isButtonActive="!data.isShowButtonActive"
+      @onInput="setToDefault"
+      @onShowClicked="filter(0)"
+      inputPlaceholder="Group id"
+      v-model="groupId"
+    />
     <div class="error-message text-danger">{{ data.errorMessage }}</div>
     <div v-if="isFetching">Loading...</div>
     <div v-else-if="data.result.length" class="communities__result">
@@ -28,13 +17,7 @@
       <div class="community-members-resut-header fs-4 fw-bolder mt-2 mb-1">
         Результат запроса:
       </div>
-      <div class="community__results my-4">
-        <UserCard
-          v-for="member in data.displayedMembers"
-          :user-info="member"
-          :key="member"
-        />
-      </div>
+      <WorkScreenPartsResult :users="data.displayedMembers" />
       <nav aria-label="Page navigation example">
         <ul class="pagination">
           <li class="page-item">
@@ -67,6 +50,7 @@
 import { Filter } from "~/utils/filters";
 import { storeToRefs } from "pinia";
 import { useFilterStore } from "@/store/filter";
+import InputGroup from "../parts/InputGroup.vue";
 
 const store = useFilterStore();
 const { currentFilter } = storeToRefs(store);
@@ -153,7 +137,7 @@ async function filter(offset) {
 
 const fetchMembers = async (offset, count) => {
   const { members, error } = await $fetch(
-    `/api/groups/members?group_id=${groupId.value}&offset=${offset}&count=${count}`
+    `/api/groups/members?group_id=${groupId.value}`
   );
 
   if (error) {
@@ -195,14 +179,3 @@ export default {
   name: "Communities",
 };
 </script>
-
-<style lang="scss" scoped>
-.community {
-  &__results {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    column-gap: 1.5rem;
-    row-gap: 2rem;
-  }
-}
-</style>
