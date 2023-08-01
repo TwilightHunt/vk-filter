@@ -22,7 +22,7 @@
         <ul class="pagination">
           <li class="page-item">
             <a
-              :class="`page-link ${currentPage > 1 ? '' : 'disabled'}`"
+              :class="`page-link ${data.currentPage > 1 ? '' : 'disabled'}`"
               @click="goToPreviousPage"
               href="#"
               >Previous</a
@@ -32,7 +32,7 @@
             <a
               @click="goToNextPage"
               :class="`page-link ${
-                maxPage && currentPage === maxPage ? 'disabled' : ''
+                data.maxPage && currentPage === maxPage ? 'disabled' : ''
               }`"
               href="#"
               >Next</a
@@ -61,12 +61,13 @@ const data = reactive({
   displayedLikes: [],
   errorMessage: "",
   cities: "",
-  count: 10,
+  count: 100,
   currentOffset: 0,
   currentPage: 1,
   likesCount: 0,
   maxPage: null,
   isShowButtonActive: true,
+  usersForPage: 10,
 });
 
 async function filter(offset) {
@@ -99,8 +100,8 @@ async function filter(offset) {
       data.result.push(...filter.value);
       offset += data.count;
     }
-    const end = data.currentPage * data.count;
-    const start = end - data.count;
+    const end = data.currentPage * data.usersForPage;
+    const start = end - data.usersForPage;
     data.displayedLikes = data.result.slice(start, end);
     data.errorMessage = "";
     isFetching.value = false;
@@ -117,7 +118,7 @@ async function filter(offset) {
 
 const fetchUsers = async (offset, count) => {
   const { likes, error } = await $fetch(
-    `/api/posts/likes?url=${postUrl.value}}&offset=${offset}`
+    `/api/posts/likes?url=${postUrl.value}}&offset=${offset}&count=${count}`
   );
 
   if (error) {
@@ -127,8 +128,9 @@ const fetchUsers = async (offset, count) => {
 };
 
 const goToNextPage = async () => {
-  const end = data.currentPage * data.count;
-  const start = end - data.count;
+  data.currentPage++;
+  const end = data.currentPage * data.usersForPage;
+  const start = end - data.usersForPage;
 
   if (data.result.length < end) {
     await filter(data.currentOffset);
@@ -138,8 +140,9 @@ const goToNextPage = async () => {
 };
 
 const goToPreviousPage = async () => {
-  const end = data.currentPage * data.count;
-  const start = end - data.count;
+  data.currentPage--;
+  const end = data.currentPage * data.usersForPage;
+  const start = end - data.usersForPage;
   data.displayedLikes = data.result.slice(start, end);
 };
 

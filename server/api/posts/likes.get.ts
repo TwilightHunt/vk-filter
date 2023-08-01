@@ -2,7 +2,7 @@ import { vk } from "~/utils/vk";
 
 export default defineEventHandler(async (event) => {
   try {
-    const { url, offset } = getQuery(event);
+    const { url, offset, count } = getQuery(event);
 
     if (!url) {
       throw new Error("Link is not specified");
@@ -21,6 +21,7 @@ export default defineEventHandler(async (event) => {
         filter: "likes",
         extended: 0,
         offset: parseInt(offset as string),
+        count: parseInt(count as string),
       });
       return {
         likes,
