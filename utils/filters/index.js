@@ -5,35 +5,47 @@ export class Filter {
     this.value = value;
   }
   max_age(max_age) {
-    this.value = this.value.filter(
-      (member) =>
-        countAgeByBDate(member?.bdate) &&
-        countAgeByBDate(member?.bdate) <= max_age
-    );
+    if (max_age) {
+      this.value = this.value.filter(
+        (member) =>
+          countAgeByBDate(member?.bdate) &&
+          countAgeByBDate(member?.bdate) <= max_age
+      );
+    }
     return this;
   }
   min_age(min_age) {
-    this.value = this.value.filter(
-      (member) =>
-        countAgeByBDate(member?.bdate) &&
-        countAgeByBDate(member?.bdate) >= min_age
-    );
+    if (min_age) {
+      this.value = this.value.filter(
+        (member) =>
+          countAgeByBDate(member?.bdate) &&
+          countAgeByBDate(member?.bdate) >= min_age
+      );
+    }
     return this;
   }
   sex(id) {
-    this.value = this.value.filter((member) => member?.sex === id);
+    if (id) {
+      this.value = this.value.filter((member) => member?.sex === id);
+    }
     return this;
   }
   city(id) {
-    this.value = this.value.filter((member) => member?.city?.id === id);
+    if (id) {
+      this.value = this.value.filter((member) => member?.city?.id === id);
+    }
     return this;
   }
-  skipClosed() {
-    this.value = this.value.filter((member) => !!member?.can_access_closed);
+  skipClosed(value) {
+    if (value) {
+      this.value = this.value.filter((member) => !!member?.can_access_closed);
+    }
     return this;
   }
-  skipDeleted() {
-    this.value = this.value.filter((member) => !!!member?.deactivated);
+  skipDeleted(value) {
+    if (value) {
+      this.value = this.value.filter((member) => !!!member?.deactivated);
+    }
     return this;
   }
 }

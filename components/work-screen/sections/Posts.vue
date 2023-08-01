@@ -87,16 +87,18 @@ async function filter(offset) {
       });
       let likesInfo = response.users;
       const filter = new Filter(likesInfo);
-      if (currentFilter.value.sex.id !== 0)
-        filter.sex(currentFilter.value.sex.id);
-      if (currentFilter.value.city.id !== 0)
-        filter.city(currentFilter.value.city.id);
-      if (currentFilter.value.max_age)
-        filter.max_age(currentFilter.value.max_age);
-      if (currentFilter.value.min_age)
-        filter.min_age(currentFilter.value.min_age);
-      if (currentFilter.value.isSkipClosed) filter.skipClosed();
-      if (currentFilter.value.isSkipDeleted) filter.skipDeleted();
+
+      const { sex, city, max_age, min_age, isSkipClosed, isSkipDeleted } =
+        currentFilter.value;
+
+      filter
+        .sex(sex.id)
+        .city(city.id)
+        .max_age(max_age)
+        .min_age(min_age)
+        .skipClosed(isSkipClosed)
+        .skipDeleted(isSkipDeleted);
+
       data.result.push(...filter.value);
       offset += data.count;
     }
