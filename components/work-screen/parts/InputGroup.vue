@@ -3,7 +3,6 @@
     <input
       type="text"
       :placeholder="inputPlaceholder"
-      v-model="groupId"
       class="form-control"
       @input="onChange"
     />

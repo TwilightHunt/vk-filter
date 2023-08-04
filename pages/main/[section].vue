@@ -3,17 +3,22 @@
     <Header />
     <div class="container">
       <div class="row gap-3 py-4">
-        <Filters class="col" />
+        <Filter class="col" />
         <div @click="openFilters" class="d-flex d-md-none filters-btn">
           <IconsFilter /> Показать фильтры
         </div>
-        <WorkScreen class="col-lg-9 col-md-8 col-sm-12 col-12" />
+        <WorkScreen
+          :section="section"
+          class="col-lg-9 col-md-8 col-sm-12 col-12"
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
+const { section } = useRoute().params;
+
 const openFilters = () => {
   const filter = document.getElementById("filter");
   filter.classList.add("show");

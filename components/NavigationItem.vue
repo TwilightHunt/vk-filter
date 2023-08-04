@@ -1,20 +1,14 @@
 <template>
-  <div
-    class="navigation-item py-3 px-4"
-    @click="setCurrentSection(component, filter)"
-  >
+  <nuxt-link :to="path" class="navigation-item py-3 px-4">
     {{ title }}
-  </div>
+  </nuxt-link>
 </template>
 
 <script>
-import { setCurrentSection } from "~/composables/useNavigation";
-
 export default {
   props: {
     title: { type: String, requied: true },
-    component: { requied: true },
-    filter: { requied: true },
+    path: { type: String, requied: true },
   },
 };
 </script>

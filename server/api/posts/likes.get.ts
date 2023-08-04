@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
     if (matches) {
       const [owner_id, item_id] = matches[0].toString().split("_");
 
-      const likes = await vk.api.likes.getList({
+      const users = await vk.api.likes.getList({
         type: "post",
         item_id: parseInt(item_id),
         owner_id: parseInt(owner_id),
@@ -24,7 +24,7 @@ export default defineEventHandler(async (event) => {
         count: parseInt(count as string),
       });
       return {
-        likes,
+        users,
       };
     } else {
       throw new Error("Invalid link");

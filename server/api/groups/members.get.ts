@@ -4,14 +4,14 @@ export default defineEventHandler(async (event) => {
   try {
     const { group_id, offset, count } = getQuery(event);
 
-    const members = await vk.api.groups.getMembers({
+    const users = await vk.api.groups.getMembers({
       group_id: group_id as string,
       offset: offset as number,
       count: count as number,
     });
 
     return {
-      members,
+      users,
     };
   } catch (error: any) {
     let errorMessage = "";
