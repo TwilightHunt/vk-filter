@@ -43,6 +43,7 @@
         </ul>
       </nav>
     </div>
+    <div v-else-if="data.nobodyFound">Никого не найдено :(</div>
   </div>
 </template>
 
@@ -68,6 +69,7 @@ const data = reactive({
   usersCount: 0,
   maxPage: null,
   isShowButtonActive: false,
+  nobodyFound: false,
 });
 
 import { Filter } from "~/utils/filters";
@@ -88,6 +90,7 @@ const setToDefault = () => {
   data.maxPage = null;
   data.result = [];
   data.displayedUsers = [];
+  data.nobodyFound = false;
   if (userInput.value) {
     data.isShowButtonActive = true;
   }
@@ -136,6 +139,10 @@ async function filter(offset) {
     data.errorMessage = "";
     isFetching.value = false;
     data.currentOffset = offset;
+
+    if (data.result.length === 0) {
+      data.nobodyFound = true;
+    }
     if (offset > data.usersCount) {
       data.maxPage = data.currentPage;
     }
