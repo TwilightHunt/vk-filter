@@ -11,10 +11,13 @@
         :options="locales"
         v-model="localeProperties"
         @onChange="switchLanguage"
-        alignRight="true"
+        alignRight
         color="primary"
+        class="d-md-block d-none"
       />
+      <IconsBurger class="d-md-none d-block" @click="openMenu" />
     </div>
+    <Menu ref="menu" />
   </div>
 </template>
 
@@ -26,6 +29,11 @@ const router = useRouter();
 
 const switchLanguage = (option) => {
   router.push(switchLocalePath(option.code));
+};
+
+const openMenu = () => {
+  const menu = document.getElementById("menu");
+  menu.classList.add("show");
 };
 </script>
 

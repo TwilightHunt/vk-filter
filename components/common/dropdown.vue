@@ -1,9 +1,11 @@
 <template>
   <div v-on-click-outside="closeDropdown">
-    <div class="dropdown">
+    <div class="dropdown w-100">
       <button
         class="btn dropdown-toggle d-flex align-items-center gap-1"
-        :class="color ? `btn-${color}` : 'btn-dark'"
+        :class="
+          (color ? `btn-${color}` : 'btn-dark') + (large ? ' btn-lg' : '')
+        "
         type="button"
         id="dropdownMenuButton"
         data-mdb-toggle="dropdown"
@@ -21,6 +23,7 @@
         <a
           v-for="option in options"
           class="dropdown-item"
+          :class="large ? ' option-lg' : ''"
           href="#"
           :key="option.id ?? option.code"
           @click.prevent="select(option)"
@@ -42,6 +45,7 @@ const props = defineProps({
   modelValue: Object,
   alignRight: Boolean,
   color: String,
+  large: Boolean,
 });
 
 function select(option) {
@@ -70,5 +74,9 @@ function closeDropdown() {
     right: 0;
     left: auto;
   }
+}
+.option-lg {
+  padding: 0.5rem 1rem;
+  font-size: 1.25rem;
 }
 </style>
