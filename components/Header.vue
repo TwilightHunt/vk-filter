@@ -11,6 +11,8 @@
         :options="locales"
         v-model="localeProperties"
         @onChange="switchLanguage"
+        alignRight="true"
+        color="primary"
       />
     </div>
   </div>

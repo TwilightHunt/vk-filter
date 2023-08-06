@@ -2,7 +2,8 @@
   <div v-on-click-outside="closeDropdown">
     <div class="dropdown">
       <button
-        class="btn btn-dark dropdown-toggle d-flex align-items-center gap-1"
+        class="btn dropdown-toggle d-flex align-items-center gap-1"
+        :class="color ? `btn-${color}` : 'btn-dark'"
         type="button"
         id="dropdownMenuButton"
         data-mdb-toggle="dropdown"
@@ -14,6 +15,7 @@
       <div
         ref="menu"
         class="dropdown-menu dropdown-menu-dark"
+        :class="alignRight ? 'dropdown-menu-end' : ''"
         aria-labelledby="dropdownMenuButton"
       >
         <a
@@ -38,6 +40,8 @@ const emit = defineEmits(["update:modelValue", "onChange"]);
 const props = defineProps({
   options: Array,
   modelValue: Object,
+  alignRight: Boolean,
+  color: String,
 });
 
 function select(option) {
@@ -62,5 +66,9 @@ function closeDropdown() {
 .dropdown-menu {
   max-height: 200px;
   overflow-y: auto;
+  &-end {
+    right: 0;
+    left: auto;
+  }
 }
 </style>
