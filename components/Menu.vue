@@ -39,7 +39,7 @@ const closeMenu = () => {
 
 <style lang="scss" scoped>
 .mobile-menu {
-  position: absolute;
+  position: fixed;
   inset: 0;
   left: 10vw;
   z-index: 50;
@@ -47,6 +47,7 @@ const closeMenu = () => {
   transition: 0.2s ease-in-out;
   padding: 2.1rem 2rem;
   &:not(.show) {
+    box-shadow: unset;
     transform: translateX(100%);
   }
   & .navigation-item {
