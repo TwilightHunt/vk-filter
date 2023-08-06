@@ -1,6 +1,6 @@
 <template>
   <div id="filter" class="filters p-md-4 col rounded bg-black">
-    <div class="filters" v-if="currentFilter">
+    <div v-if="currentFilter">
       <div class="filter-dropdown">
         <div class="filter-dropdown__title">Пол:</div>
         <CommonDropdown
