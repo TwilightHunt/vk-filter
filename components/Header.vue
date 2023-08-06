@@ -22,14 +22,8 @@
 </template>
 
 <script setup>
-const switchLocalePath = useSwitchLocalePath();
 const { locales, localeProperties } = useI18n();
-
-const router = useRouter();
-
-const switchLanguage = (option) => {
-  router.push(switchLocalePath(option.code));
-};
+import { switchLanguage } from "~/composables/useLocales";
 
 const openMenu = () => {
   const menu = document.getElementById("menu");
