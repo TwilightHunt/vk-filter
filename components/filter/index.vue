@@ -2,7 +2,7 @@
   <div id="filter" class="filters p-md-4 col rounded bg-black">
     <div v-if="currentFilter">
       <div class="filter-dropdown">
-        <div class="filter-dropdown__title">Пол:</div>
+        <div class="filter-dropdown__title fs-5">Пол:</div>
         <CommonDropdown
           :options="genders"
           v-model="currentFilter.sex"
@@ -10,7 +10,7 @@
         />
       </div>
       <div class="filter-dropdown">
-        <div class="filter-dropdown__title">Город:</div>
+        <div class="filter-dropdown__title fs-5">Город:</div>
         <CommonDropdown
           :options="data.cities"
           v-model="currentFilter.city"
@@ -18,7 +18,7 @@
         />
       </div>
       <div>
-        <div class="fs-5 mb-3">Возраст</div>
+        <div class="fs-5 mb-3">Возраст:</div>
         <span class="me-2">От: </span>
         <input
           type="text"
@@ -114,6 +114,12 @@ onMounted(async () => {
     transform: translateX(100%);
     &.show {
       transform: translateX(0);
+    }
+    & .filter-dropdown {
+      display: block;
+      &__title {
+        margin-bottom: 1rem;
+      }
     }
   }
 }
