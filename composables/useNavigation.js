@@ -14,7 +14,7 @@ const postsData = {
 
 const friendsData = {
   name: "users",
-  fetchUrl: "/api/posts/likes?url=",
+  fetchUrl: "/api/users/friends?id=",
   sectionPlaceholder: "User id",
   sectionTitle: "Filter user's friends",
 };

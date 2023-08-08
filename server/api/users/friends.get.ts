@@ -2,12 +2,14 @@ import { vk } from "~/utils/vk";
 
 export default defineEventHandler(async (event) => {
   try {
-    const query = getQuery(event);
-    const user = await vk.api.users.get({
-      user_ids: [query.user_id],
+    const { id, offset, count } = getQuery(event);
+    const users = await vk.api.friends.get({
+      user_id: parseInt(id as string),
+      offset: parseInt(offset as string),
+      count: parseInt(count as string),
     });
     return {
-      user,
+      users,
     };
   } catch (error) {
     return {
