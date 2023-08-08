@@ -12,7 +12,7 @@
     <div v-if="isFetching">Loading...</div>
     <div v-else-if="data.result.length" class="communities__result">
       <div class="community-users-count fs-4">
-        Количество участников: {{ data.usersCount }}
+        {{ currentSection.amountText }}: {{ data.usersCount }}
       </div>
       <div class="community-users-resut-header fs-4 fw-bolder mt-2 mb-1">
         Результат запроса:
