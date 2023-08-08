@@ -11,9 +11,10 @@ export default defineEventHandler(async (event) => {
     return {
       users,
     };
-  } catch (error) {
+  } catch (error: any) {
+    let errorMessage = "";
     return {
-      error,
+      error: errorMessage || error.message,
     };
   }
 });
