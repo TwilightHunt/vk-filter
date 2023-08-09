@@ -4,12 +4,11 @@
       <img src="~/assets/images/icons8-vk-500.png" alt="" />
       <Transition name="appear" mode="out-in">
         <div v-if="!isActive" class="auth-warning">
-          Для корректной работы приложению необходимы некоторые данные вашего
-          аккаунта ВКонтакте
+          {{ $t("authText") }}
         </div>
         <div v-else class="auth-form mt-4">
           <div class="form-group mb-3">
-            <label for="login-input" class="mb-2">Your VK login</label>
+            <label for="login-input" class="mb-2"> {{ $t("yourLogin") }}</label>
             <input
               type="text"
               class="form-control form-control-lg"
@@ -19,7 +18,9 @@
             />
           </div>
           <div class="form-group">
-            <label for="password-input" class="mb-2">Your VK password</label>
+            <label for="password-input" class="mb-2">{{
+              $t("yourPassword")
+            }}</label>
             <input
               type="password"
               class="form-control form-control-lg"
@@ -58,7 +59,7 @@
               ></path>
             </g>
           </svg>
-          Войти
+          {{ $t("signIn") }}
         </div>
       </button>
     </div>

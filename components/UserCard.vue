@@ -10,7 +10,7 @@
       <div class="user-card__text">{{ props.userInfo.first_name }}</div>
       <div class="user-card__text">{{ props.userInfo.last_name }}</div>
       <div v-if="age" class="user-card__subtext">
-        {{ age }} {{ getNounForAge(age) }}
+        {{ age }} {{ locale === "ru" ? getNounForAge(age) : "years" }}
       </div>
     </a>
   </div>
@@ -19,6 +19,7 @@
 <script setup>
 import { countAgeByBDate } from "@/composables/useCounters";
 import { getNounForAge } from "~/utils/nouns";
+const { locale } = useI18n();
 
 const props = defineProps({
   userInfo: { type: Object, required: true },

@@ -1,25 +1,25 @@
 const communitiesData = {
   name: "communities",
   fetchUrl: "/api/groups/members?group_id=",
-  sectionPlaceholder: "Group id (number)",
-  sectionTitle: "Filter members",
-  amountText: "Количество участников",
+  sectionPlaceholder: "communitiesPlaceholder",
+  sectionTitle: "communitiesTitle",
+  amountText: "communitiesAmount",
 };
 
 const postsData = {
   name: "posts",
   fetchUrl: "/api/posts/likes?url=",
   sectionPlaceholder: "https://vk.com/groupDomen?w=wall-groud-id_post-id",
-  sectionTitle: "Filter likes in posts",
-  amountText: "Количество лайков на посте",
+  sectionTitle: "postsTitle",
+  amountText: "postsAmount",
 };
 
 const friendsData = {
   name: "users",
   fetchUrl: "/api/users/friends?id=",
-  sectionPlaceholder: "User id",
-  sectionTitle: "Filter user's friends",
-  amountText: "Количество друзей пользователя",
+  sectionPlaceholder: "friendsPlaceholder",
+  sectionTitle: "friendsTitle",
+  amountText: "friendsAmount",
 };
 
 const sections = [communitiesData, postsData, friendsData];

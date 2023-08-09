@@ -1,21 +1,21 @@
 <template>
   <div class="workscreen p-4 rounded overflow-hidden bg-black">
-    <h3 class="section mb-4">{{ currentSection.sectionTitle }}</h3>
+    <h3 class="section mb-4">{{ $t(currentSection.sectionTitle) }}</h3>
     <InputGroup
       :isButtonActive="!data.isShowButtonActive"
       @onInput="setToDefault"
       @onShowClicked="filter(0)"
-      :inputPlaceholder="currentSection.sectionPlaceholder"
+      :inputPlaceholder="$t(currentSection.sectionPlaceholder)"
       v-model="userInput"
     />
     <div class="error-message text-danger">{{ data.errorMessage }}</div>
-    <div v-if="isFetching">Loading...</div>
+    <div v-if="isFetching">{{ $t("loading") }}...</div>
     <div v-else-if="data.result.length" class="communities__result">
       <div class="community-users-count fs-4">
-        {{ currentSection.amountText }}: {{ data.usersCount }}
+        {{ $t(currentSection.amountText) }}: {{ data.usersCount }}
       </div>
       <div class="community-users-resut-header fs-4 fw-bolder mt-2 mb-1">
-        Результат запроса:
+        {{ $t("result") }}:
       </div>
       <WorkScreenPartsResult :users="data.displayedUsers" />
       <nav aria-label="Page navigation example">
@@ -25,7 +25,7 @@
               :class="`page-link ${data.currentPage > 1 ? '' : 'disabled'}`"
               @click="goToPreviousPage"
               href="#"
-              >Previous</a
+              >{{ $t("previous") }}</a
             >
           </li>
           <li class="page-item">
@@ -37,13 +37,13 @@
                   : ''
               }`"
               href="#"
-              >Next</a
+              >{{ $t("next") }}</a
             >
           </li>
         </ul>
       </nav>
     </div>
-    <div v-else-if="data.nobodyFound">Никого не найдено :(</div>
+    <div v-else-if="data.nobodyFound">{{ $t("nothingFound") }} :(</div>
   </div>
 </template>
 

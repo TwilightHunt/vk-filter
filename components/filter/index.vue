@@ -2,7 +2,7 @@
   <div id="filter" class="filters p-md-4 col rounded bg-black">
     <div v-if="currentFilter">
       <div class="filter-dropdown">
-        <div class="filter-dropdown__title fs-5">Пол:</div>
+        <div class="filter-dropdown__title fs-5">{{ $t("sex") }}:</div>
         <CommonDropdown
           :options="genders"
           v-model="currentFilter.sex"
@@ -10,7 +10,7 @@
         />
       </div>
       <div class="filter-dropdown">
-        <div class="filter-dropdown__title fs-5">Город:</div>
+        <div class="filter-dropdown__title fs-5">{{ $t("city") }}:</div>
         <CommonDropdown
           :options="data.cities"
           v-model="currentFilter.city"
@@ -18,8 +18,8 @@
         />
       </div>
       <div>
-        <div class="fs-5 mb-3">Возраст:</div>
-        <span class="me-2">От: </span>
+        <div class="fs-5 mb-3">{{ $t("age") }}:</div>
+        <span class="me-2">{{ $t("from") }}: </span>
         <input
           type="text"
           v-maska:[age]
@@ -27,7 +27,7 @@
           v-model="currentFilter.min_age"
           class="age-input"
         />
-        <span class="me-2 ms-5">До: </span>
+        <span class="me-2 ms-5">{{ $t("to") }}: </span>
         <input
           type="text"
           v-maska:[age]
@@ -38,11 +38,11 @@
       </div>
       <div class="mt-3">
         <CommonCheckbox
-          label="Скрывать удаленные аккаунты"
+          :label="$t('hideDeleted')"
           v-model="currentFilter.isSkipDeleted"
         />
         <CommonCheckbox
-          label="Скрывать закрытые аккаунты"
+          :label="$t('hideClosed')"
           v-model="currentFilter.isSkipClosed"
         />
       </div>

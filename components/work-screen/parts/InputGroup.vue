@@ -13,7 +13,7 @@
       id="button-addon2"
       :disabled="isButtonActive"
     >
-      Show
+      {{ $t("show") }}
     </button>
   </div>
 </template>
