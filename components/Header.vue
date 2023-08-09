@@ -23,7 +23,12 @@
 
 <script setup>
 const { locales, localeProperties } = useI18n();
-import { switchLanguage } from "~/composables/useLocales";
+const switchLocalePath = useSwitchLocalePath();
+const router = useRouter();
+
+const switchLanguage = (option) => {
+  router.push(switchLocalePath(option.code));
+};
 
 const openMenu = () => {
   const menu = document.getElementById("menu");

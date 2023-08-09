@@ -23,7 +23,12 @@
 <script setup>
 import { vOnClickOutside } from "@vueuse/components";
 const { locales, localeProperties } = useI18n();
-import { switchLanguage } from "~/composables/useLocales";
+const switchLocalePath = useSwitchLocalePath();
+const router = useRouter();
+
+const switchLanguage = (option) => {
+  router.push(switchLocalePath(option.code));
+};
 
 const closeMenu = () => {
   const menu = document.getElementById("menu");
