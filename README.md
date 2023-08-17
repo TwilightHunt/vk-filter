@@ -1,42 +1,13 @@
-# Nuxt 3 Minimal Starter
+# VK-Filter
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+VK API приложения для сортировки людей среди участников сообществ ВК, лайках под постами и друзьях пользователя. 
+Доступен русский и английский язык (i18n).
 
-## Setup
+VK API application for sorting people among members of VK communities, likes under posts and friends of the user. 
+Russian and English (i18n) are available.
 
-Make sure to install the dependencies:
+- Фреймворк: Nuxt3
+- URL: https://vk-filter.vercel.app/
 
-```bash
-# yarn
-yarn install
+![image](https://github.com/TwilightHunt/vk-filter/assets/55912590/ab3c3b2b-9c70-4b4d-ba41-6cf9737e068f)
 
-# npm
-npm install
-
-# pnpm
-pnpm install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`
-
-```bash
-npm run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-npm run build
-```
-
-Locally preview production build:
-
-```bash
-npm run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
